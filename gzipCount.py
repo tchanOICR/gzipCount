@@ -38,26 +38,23 @@ for Input in sys.argv:
                     for char in record[:-1]:
                         if char == 'A':
                             cycles[count]['A'] += 1
-                            totalCount['A'] += 1
                         elif char == 'T':
                             cycles[count]['T'] += 1
-                            totalCount['T'] += 1
                         elif char == 'C':
                             cycles[count]['C'] += 1
-                            totalCount['C'] += 1
                         elif char == 'G':
                             cycles[count]['G'] += 1
-                            totalCount['G'] += 1
                         elif char == 'N':
                             cycles[count]['N'] += 1
-                            totalCount['N'] += 1
                         count += 1
                     line += 1
                 elif line == 4:
                     line = 1
-print(len(cycles))
 for cycle in cycles:
     cycle = {key:val for key, val in cycle.items() if val != 0}
     newCycles.append(cycle)
+    for key in cycle:
+        totalCount[key] += cycle[key]
+print(len(newCycles))
 print(newCycles)
 print(totalCount)
