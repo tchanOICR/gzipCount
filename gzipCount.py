@@ -5,10 +5,6 @@ Created on Fri Aug 27 12:45:41 2021
 @author: tchan
 """
 
-# CMD Inputs
-# cd Users\tchan\Documents\Python\testFile
-# python gzipCount.py OCT_010126_Ly_R_nn_1-10_LB01-01_210805_M00753_0369_000000000-G8WYC_1_CGGTTGTT-CATACCAC_R1.fastq.gz OCT_010126_Ly_R_nn_1-10_LB01-01_210805_M00753_0369_000000000-G8WYC_1_CGGTTGTT-CATACCAC_R2.fastq.gz
-
 import gzip, sys
 
 cycles = []
