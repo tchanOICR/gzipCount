@@ -9,7 +9,6 @@ import gzip, sys
 
 cycles = []
 newCycles = []
-files = []
 totalCount = {'A':0,'T':0,'C':0,'G':0,'N':0}
 maxLen = 0
 
