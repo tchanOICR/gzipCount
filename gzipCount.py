@@ -21,8 +21,9 @@ def CSV_reader(foundFiles,fileName):
     with open(fileName) as csv_file:
         file = csv.reader(csv_file, delimiter = ',')
         for row in file:
-            foundFiles.append(row[5])
-            foundFiles.append(row[6])
+            if '.fastq.gz' in row[5] and '.fastq.gz' in row[6]:
+                foundFiles.append(row[5])
+                foundFiles.append(row[6])
     return foundFiles
 
 def JSON_reader(foundFiles,fileName):
