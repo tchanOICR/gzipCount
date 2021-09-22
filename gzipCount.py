@@ -6,6 +6,7 @@ Created on Fri Aug 27 12:45:41 2021
 """
 
 import json, csv, gzip, sys
+from datetime import date
 
 cycles = []
 newCycles = []
@@ -86,5 +87,9 @@ for cycle in cycles:
     newCycles.append(cycle)
     for key in cycle:
         totalCount[key] += cycle[key]
-        
-print(totalCount)
+
+date = str(date.today())
+textFile = open(date+'.txt','w')
+textFile.write(str(totalCount))
+textFile.close()
+print('File created.')
