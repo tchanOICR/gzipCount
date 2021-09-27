@@ -7,17 +7,10 @@ Created on Fri Aug 27 12:45:41 2021
 
 def file_reader(fileName,origFile):
     import gzip
-    from datetime import date
-    
+    from datetime import datetime
     cycles = []
-    newCycles = []
     totalCount = {'A':0,'T':0,'C':0,'G':0,'N':0}
     maxLen = 0
-    
-    if isinstance(fileName,list) == False:
-        loose_file_list = []
-        loose_file_list.append(fileName)
-        fileName = loose_file_list
     
     for Input in fileName:
         with gzip.open(Input,'rt') as current_file:
@@ -28,6 +21,7 @@ def file_reader(fileName,origFile):
                 elif line == 2:
                     if 'R1.fastq' in Input:
                         count = 0
+                        origFile = str(Input)[:-11]
                     elif 'R2.fastq' in Input:
                         count = len(record)-1
                     testLen = len(record)-1
@@ -54,21 +48,28 @@ def file_reader(fileName,origFile):
                     line += 1
                 elif line == 4:
                     line = 1
+        
+            if 'R2.fastq' in Input:
+                newCycles = []
                 
-    for cycle in cycles:
-        if cycle == {'A':0,'T':0,'C':0,'G':0,'N':0}:
-            continue
-        cycle = {key:val for key, val in cycle.items() if val != 0}
-        newCycles.append(cycle)
-        for key in cycle:
-            totalCount[key] += cycle[key]
-    
-    date = str(date.today())
-    textFile = open(date+' '+origFile+'.txt','w')
-    textFile.write(str(newCycles))
-    textFile.write('\n'+str(totalCount))
-    textFile.close()
-    print('File created.')    
+                for cycle in cycles:
+                    if cycle == {'A':0,'T':0,'C':0,'G':0,'N':0}:
+                        continue
+                    cycle = {key:val for key, val in cycle.items() if val != 0}
+                    newCycles.append(cycle)
+                    for key in cycle:
+                        totalCount[key] += cycle[key]
+                
+                date = str(datetime.now().strftime('%d-%b-%Y_%H-%M-%S'))
+                TextName = date+'_'+origFile+'.txt'
+                textFile = open(TextName,'w+')
+                textFile.write(str(newCycles))
+                textFile.write('\n'+str(totalCount))
+                textFile.close()
+                print('File created.')
+                cycles = []
+                totalCount = {'A':0,'T':0,'C':0,'G':0,'N':0}
+                maxLen = 0
 
 def CSV_reader(fileName):
     import csv
@@ -99,11 +100,14 @@ def JSON_reader(fileName):
 import sys
 
 looseFiles = []
+looseFileNames = []
 
 for file_type in sys.argv:
     if '.fastq.gz' in file_type:
-        file_reader(file_type,file_type)
+        looseFiles.append(file_type)
+        looseFileNames.append(file_type)
     elif '.csv' in file_type:
         CSV_reader(file_type)
     elif '.json' in file_type:
         JSON_reader(file_type)
+file_reader(looseFiles,looseFileNames)
