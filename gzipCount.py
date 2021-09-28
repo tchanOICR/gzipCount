@@ -8,8 +8,8 @@ Created on Fri Aug 27 12:45:41 2021
 def file_reader(fileName,origFile):
     import gzip
     from datetime import datetime
+    
     cycles = []
-    totalCount = {'A':0,'T':0,'C':0,'G':0,'N':0}
     maxLen = 0
     
     for Input in fileName:
@@ -51,6 +51,7 @@ def file_reader(fileName,origFile):
         
             if 'R2.fastq' in Input:
                 newCycles = []
+                totalCount = {'A':0,'T':0,'C':0,'G':0,'N':0}
                 
                 for cycle in cycles:
                     if cycle == {'A':0,'T':0,'C':0,'G':0,'N':0}:
@@ -60,15 +61,13 @@ def file_reader(fileName,origFile):
                     for key in cycle:
                         totalCount[key] += cycle[key]
                 
-                date = str(datetime.now().strftime('%d-%b-%Y_%H-%M-%S'))
-                TextName = date+'_'+origFile+'.txt'
-                textFile = open(TextName,'w+')
+                textFile = open('/u/tchan/Sequence_Results/'+str(datetime.now().strftime('%d-%b-%Y_%H-%M-%S'))+'_'+origFile+'.txt','w')
                 textFile.write(str(newCycles))
                 textFile.write('\n'+str(totalCount))
                 textFile.close()
                 print('File created.')
+                
                 cycles = []
-                totalCount = {'A':0,'T':0,'C':0,'G':0,'N':0}
                 maxLen = 0
 
 def CSV_reader(fileName):
