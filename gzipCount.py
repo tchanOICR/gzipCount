@@ -6,20 +6,18 @@ Created on Fri Aug 27 12:45:41 2021
 """
 
 def file_reader(fileName):
-    import gzip
+    import gzip, re
+    from datetime import datetime
 
     cycles = []
 
     for Input in fileName:
         with gzip.open(Input,'rt') as current_file:
             line = 1
-            
             for record in current_file:
                 record = record.rstrip()
-                
                 if line == 1 or line == 3:
                     line += 1
-                    
                 elif line == 2:
                     if 'R1.fastq' in Input:
                         count = 0
@@ -43,8 +41,14 @@ def file_reader(fileName):
 
                 for cycle in cycles:
                     for key in cycle:
-                        totalCount[key] += cycle[key]              
-                print(str(cycles)+'\n'+str(totalCount), file = sys.stdout)
+                        totalCount[key] += cycle[key]
+                        
+                p = re.compile(r'/.*/')
+                origFile = (p.split(Input))[1]
+                textFile = open('/u/tchan/Sequence_Results/'+str(datetime.now().strftime('%d-%b-%Y_%H-%M-%S'))+'_'+origFile[:-12]+'.txt','w')
+                textFile.write(str(cycles)+'\n'+str(totalCount))
+                textFile.close()
+                print('File created.')
 
                 cycles = []
 
